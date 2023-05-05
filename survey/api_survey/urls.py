@@ -1,12 +1,17 @@
 from django.urls import path
-from .views import EmployeeList
-from .views import AreaList
-from .views import GetEmployee
-from .views import GetArea
+from rest_framework.routers import DefaultRouter
+from django.urls import path,include
+from api_survey.views.modelsviews import *
+
+router_employee = router_area = router_evaluation = router_survey = DefaultRouter()
+router_employee.register(r'employee', EmployeeTask, basename="employees")
+router_area.register(r'area', AreaTask, basename="areas")
+router_evaluation.register(r'evaluation', EvaluationTask, basename="evaluations")
+router_survey.register(r'survey', SurveyTask, basename="encuestas")
 
 urlpatterns = [
-    path('employee/',EmployeeList.as_view(), name = 'employee_list'),
-    path('get_employee/<int:employee_id>',GetEmployee.as_view(), name = 'get_employee'),
-    path('area/',AreaList.as_view(), name = 'area_list'),
-    path('get_area/<int:area_id>',GetArea.as_view(), name = 'get_area'),
+    path('', include(router_employee.urls)),
+    path('', include(router_area.urls)),
+    path('', include(router_evaluation.urls)),
+    path('', include(router_survey.urls)),
 ]

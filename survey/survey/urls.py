@@ -21,8 +21,5 @@ from rest_framework.authtoken import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('login',views.obtain_auth_token),
-    path('employee_list/',include(('api_survey.urls', 'api_survey'))),
-    path('employee/',include(('api_survey.urls', 'api_survey'))),
-    path('area_list/',include(('api_survey.urls', 'api_survey'))),
-    path('area/',include(('api_survey.urls', 'api_survey'))),
+    path('survey/',include(('api_survey.urls', 'api_survey'))),
 ]

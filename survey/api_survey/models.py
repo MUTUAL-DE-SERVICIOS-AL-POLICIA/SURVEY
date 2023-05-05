@@ -26,7 +26,7 @@ class Employee(models.Model):
     second_last_name = models.CharField('Segundo Apellido', max_length=100, null=True)
     identity_card = models.IntegerField('Carnet de Identidad', null=False)
     active = models.BooleanField('Activo',default=True)
-    area_id = models.ForeignKey(Area, on_delete=models.CASCADE, null=True)
+    area = models.ForeignKey(Area, on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField('Creado en',auto_now_add=True)
     updated_at = models.DateTimeField('Actualizado en ',auto_now=True)
     
@@ -36,6 +36,7 @@ class Employee(models.Model):
 class Survey(models.Model):
     id = models.AutoField(primary_key=True)
     code = models.CharField('Codigo', max_length=100,null=True)
+    description = models.CharField('Descripcion', max_length=100, null=True)
     created_at = models.DateTimeField('Creado en',auto_now_add=True)
     updated_at = models.DateTimeField('Actualizado en ',auto_now=True)
     deleted_at = models.DateTimeField('Eliminado en',null=True)
@@ -50,14 +51,14 @@ class Survey(models.Model):
     
 class Evaluation(models.Model):
     id = models.AutoField(primary_key=True)
-    id_employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
-    id_survey = models.ForeignKey(Survey, on_delete=models.CASCADE)
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    survey = models.ForeignKey(Survey, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
 class Question(models.Model):
     id = models.AutoField(primary_key=True)
-    id_survey = models.ForeignKey(Survey, on_delete=models.CASCADE)
+    survey = models.ForeignKey(Survey, on_delete=models.CASCADE)
     code = models.CharField('Codigo Pregunta', max_length=100, null=True)
     description = models.CharField('Descripcion', max_length=200)
     state = models.BooleanField(default=True)
@@ -68,12 +69,12 @@ class AnswerOption(models.Model):
     id = models.AutoField(primary_key=True)
     code = models.CharField('Codigo de respuesta', max_length=100, null=True)
     description = models.CharField('Descripcion', max_length=200)
-    id_question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
     state = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
 class Answer(models.Model):
-    id_evaluation = models.ForeignKey(Evaluation, on_delete=models.CASCADE)
-    id_question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    id_answer_option = models.ForeignKey(AnswerOption, on_delete=models.CASCADE)
+    evaluation = models.ForeignKey(Evaluation, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    answer_option = models.ForeignKey(AnswerOption, on_delete=models.CASCADE)
