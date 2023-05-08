@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils import timezone
-from django.core.validators import MaxValueValidator
+from .utils import *
 
 
 class Area(models.Model):
@@ -26,6 +26,7 @@ class Employee(models.Model):
     second_last_name = models.CharField('Segundo Apellido', max_length=100, null=True)
     identity_card = models.IntegerField('Carnet de Identidad', null=False)
     active = models.BooleanField('Activo',default=True)
+    picture = models.ImageField(upload_to=rename_image, null=True)
     area = models.ForeignKey(Area, on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField('Creado en',auto_now_add=True)
     updated_at = models.DateTimeField('Actualizado en ',auto_now=True)
@@ -40,6 +41,8 @@ class Survey(models.Model):
     created_at = models.DateTimeField('Creado en',auto_now_add=True)
     updated_at = models.DateTimeField('Actualizado en ',auto_now=True)
     deleted_at = models.DateTimeField('Eliminado en',null=True)
+    def __str__(self) -> str:
+        return '{1}'.format(self.code, self.description)
     
     def delete(self, using=None, keep_parents=False):
         self.deleted_at = timezone.now()
@@ -55,15 +58,20 @@ class Evaluation(models.Model):
     survey = models.ForeignKey(Survey, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    def __str__(self) -> str:
+        return '{0},{1}'.format(self.employee, self. survey)
     
 class Question(models.Model):
     id = models.AutoField(primary_key=True)
     survey = models.ForeignKey(Survey, on_delete=models.CASCADE)
     code = models.CharField('Codigo Pregunta', max_length=100, null=True)
     description = models.CharField('Descripcion', max_length=200)
+    image = models.ImageField(upload_to=rename_question_image, null=True)
     state = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    def __str__(self) -> str:
+        return '{0}'.format(self.description)
     
 class AnswerOption(models.Model):
     id = models.AutoField(primary_key=True)
@@ -73,8 +81,12 @@ class AnswerOption(models.Model):
     state = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    def __str__(self) -> str:
+        return '{0},{1}'.format(self.code, self.description)
     
 class Answer(models.Model):
     evaluation = models.ForeignKey(Evaluation, on_delete=models.CASCADE)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     answer_option = models.ForeignKey(AnswerOption, on_delete=models.CASCADE)
+    def __str__(self) -> str:
+        return '{0},{1},{2}'.format(self.evaluation, self.question, self.answer_option)

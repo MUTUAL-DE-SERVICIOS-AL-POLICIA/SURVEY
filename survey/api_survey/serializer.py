@@ -18,6 +18,7 @@ class EmployeeSerializer(serializers.ModelSerializer):
             'identity_card',
             'active',
             'area',
+            'picture',
         )
         
 class AreaSerializer(serializers.ModelSerializer):
@@ -50,7 +51,8 @@ class QuestionSerialize(serializers.ModelSerializer):
             'survey',
             'code',
             'description',
-            'state'
+            'state',
+            'image',
         )
         
 class AnswerSerialize(serializers.ModelSerializer):
@@ -67,7 +69,7 @@ class AnswerOptionSerializer(serializers.ModelSerializer):
         model = AnswerOption
         fields = (
             'code',
-            'descrition',
+            'description',
             'question',
             'state',
         )

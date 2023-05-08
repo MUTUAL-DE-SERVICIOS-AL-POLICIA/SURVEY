@@ -1,6 +1,4 @@
 from django.shortcuts import render
-from rest_framework import generics
-from api_survey.models import Employee
 from api_survey.models import Area
 from api_survey.serializer import AreaSerializer
 from rest_framework.views import APIView
