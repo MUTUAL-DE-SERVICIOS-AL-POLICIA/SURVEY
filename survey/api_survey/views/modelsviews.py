@@ -18,3 +18,15 @@ class EvaluationTask(viewsets.ModelViewSet):
 class SurveyTask(viewsets.ModelViewSet):
     queryset = Survey.objects.all()
     serializer_class = SurveySerializer
+    
+class QuestionsTask(viewsets.ModelViewSet):
+    queryset = Question.objects.all()
+    serializer_class = QuestionSerialize
+    
+class AnswerOptionTask(viewsets.ModelViewSet):
+    queryset = AnswerOption.objects.all()
+    serializer_class = AnswerOptionSerializer
+
+class AnswerTask(viewsets.ModelViewSet):
+    queryset = Answer.objects.all()
+    serializer_class = AnswerSerialize
