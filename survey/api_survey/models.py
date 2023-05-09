@@ -30,7 +30,7 @@ class Employee(models.Model):
     area = models.ForeignKey(Area, on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField('Creado en',auto_now_add=True)
     updated_at = models.DateTimeField('Actualizado en ',auto_now=True)
-    
+
     def __str__(self) -> str:
         return '{0} {1} {2} {3}'.format(self.first_name,self.second_name, self.last_name, self.second_last_name)
         
@@ -61,6 +61,12 @@ class Evaluation(models.Model):
     def __str__(self) -> str:
         return '{0},{1}'.format(self.employee, self. survey)
     
+class QuestionManager(models.Manager):
+    def detail_question(self, survey_id):
+        consulta = self.filter(
+        survey_id = survey_id)
+        return consulta
+
 class Question(models.Model):
     id = models.AutoField(primary_key=True)
     survey = models.ForeignKey(Survey, on_delete=models.CASCADE)
@@ -72,7 +78,15 @@ class Question(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     def __str__(self) -> str:
         return '{0}'.format(self.description)
-    
+
+    objects = QuestionManager()
+
+class AnswerOptionManager(models.Manager):
+    def detail_answer(self, question_id):
+        consultas = self.filter(
+            question_id = question_id)
+        return consultas
+
 class AnswerOption(models.Model):
     id = models.AutoField(primary_key=True)
     code = models.CharField('Codigo de respuesta', max_length=100, null=True)
@@ -83,7 +97,9 @@ class AnswerOption(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     def __str__(self) -> str:
         return '{0},{1}'.format(self.code, self.description)
-    
+
+    objects = AnswerOptionManager()
+
 class Answer(models.Model):
     evaluation = models.ForeignKey(Evaluation, on_delete=models.CASCADE)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
