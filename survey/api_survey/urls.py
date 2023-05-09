@@ -2,8 +2,9 @@ from django.urls import path
 from rest_framework.routers import DefaultRouter
 from django.urls import path,include
 from api_survey.views.modelsviews import *
+from api_survey.views.surveyviews import *
 
-router_employee = router_area = router_evaluation = router_survey = router_question = router_answer_option = router_answer = DefaultRouter()
+router_employee = router_area = router_evaluation = router_survey = router_question = router_answer_option = router_answer = router_get_survey = DefaultRouter()
 router_employee.register(r'employee', EmployeeTask, basename="Empleados")
 router_area.register(r'area', AreaTask, basename="areas")
 router_evaluation.register(r'evaluation', EvaluationTask, basename="Evaluaciones")
@@ -19,4 +20,5 @@ urlpatterns = [
     path('', include(router_survey.urls)),
     path('', include(router_answer_option.urls)),
     path('', include(router_answer.urls)),
+    path('save_evaluation',save_evaluation, name='save_evaluation'),
 ]

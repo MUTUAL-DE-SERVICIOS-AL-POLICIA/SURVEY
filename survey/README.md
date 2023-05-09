@@ -23,6 +23,8 @@ source rest/bin/activate
 ```sh
 pip3 install django
 pip3 install djangorestframework
+pip3 install django-cors-headers
+pip3 install pillow
 ```
 # Nos dirijimos a la carpeta donde se clono el proyecto
 # Configuramos la conexion a la base de datos en el archivo settings.py de la carpeta survey
