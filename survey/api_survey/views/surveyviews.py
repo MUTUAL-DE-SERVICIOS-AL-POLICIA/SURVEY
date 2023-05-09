@@ -36,6 +36,12 @@ def save_evaluation(request):
             return HttpResponse(status=400)
     except Evaluation.DoesNotExist:
          return Response(status=404, data={'error': 'Evaluation not found'})
-        
-        
 
+@api_view(['GET'])
+def get_survey(request, survey_id):
+    try:
+        survey = Survey.objects.get(id=survey_id)
+        serializer = FormQuestionSerializer(survey)
+        return Response(serializer.data)
+    except Survey.DoesNotExist:
+        return Response(status=404, data={'error': 'Survey not found'})

@@ -59,6 +59,7 @@ class AnswerSerialize(serializers.ModelSerializer):
     class Meta:
         model = Answer
         fields = (
+            'id',
             'evaluation',
             'question',
             'answer_option',
@@ -68,8 +69,39 @@ class AnswerOptionSerializer(serializers.ModelSerializer):
     class Meta:
         model = AnswerOption
         fields = (
+            'id',
             'code',
             'description',
             'question',
             'state',
         )
+class FormQuestionSerializer(serializers.ModelSerializer):
+    questions = serializers.SerializerMethodField()
+    class Meta:
+        model = Survey
+        fields = (
+            'id',
+            'code',
+            'description',
+            'questions')
+    def get_questions(self,obj):
+        query = Question.objects.detail_question(obj.id)
+        detail_question_answer = DetailQuestionAnswerSerializer(query,many=True).data
+        return detail_question_answer
+
+class DetailQuestionAnswerSerializer(serializers.ModelSerializer):
+    answers = serializers.SerializerMethodField()
+    class Meta:
+        model = Question
+        fields =(
+            'id',
+            'code',
+            'description',
+            'state',
+            'image',
+            'answers'
+        )
+    def get_answers(self,obj):
+         query = AnswerOption.objects.detail_answer(obj.id)
+         answer_option = AnswerOptionSerializer(query,many=True).data
+         return answer_option

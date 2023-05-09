@@ -21,4 +21,5 @@ urlpatterns = [
     path('', include(router_answer_option.urls)),
     path('', include(router_answer.urls)),
     path('save_evaluation',save_evaluation, name='save_evaluation'),
+    path('get_survey/<int:survey_id>/answers',get_survey, name='get_survey'),
 ]
