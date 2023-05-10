@@ -19,12 +19,17 @@ virtualenv rest --python=python3
 ```sh
 source rest/bin/activate
 ```
-# Instalamos django y djangorestframework dentro del entorno virtual
+# Instalamos los librerias necesarias dentro del entorno virtual
 ```sh
-pip3 install django
-pip3 install djangorestframework
-pip3 install django-cors-headers
-pip3 install pillow
+pip install --upgrade pip
+pip install django
+pip install djangorestframework
+pip install django-cors-headers
+pip install pillow
+pip install psycopg2
+pip install django-cors-headers
+pip install djangorestframework-simplejwt
+
 ```
 # Nos dirijimos a la carpeta donde se clono el proyecto
 # Configuramos la conexion a la base de datos en el archivo settings.py de la carpeta survey

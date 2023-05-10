@@ -22,6 +22,5 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('login',views.obtain_auth_token),
     path('survey/',include(('api_survey.urls', 'api_survey'))),
 ]
