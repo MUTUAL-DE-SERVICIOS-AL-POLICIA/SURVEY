@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from .utils import *
+from .managers import *
 
 
 class Area(models.Model):
@@ -24,8 +25,8 @@ class Employee(models.Model):
     second_name = models.CharField('Segundo Nombre', max_length=100, null=True)
     last_name = models.CharField('Primer Apellido', max_length=100, null=True)
     second_last_name = models.CharField('Segundo Apellido', max_length=100, null=True)
-    identity_card = models.IntegerField('Carnet de Identidad', null=False)
-    active = models.BooleanField('Activo',default=True)
+    identity_card = models.IntegerField('Carnet de Identidad', null=False, unique=True)
+    active = models.BooleanField('Activo', default=True)
     picture = models.ImageField(upload_to=rename_image, null=True)
     area = models.ForeignKey(Area, on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField('Creado en',auto_now_add=True)
@@ -36,7 +37,7 @@ class Employee(models.Model):
         
 class Survey(models.Model):
     id = models.AutoField(primary_key=True)
-    code = models.CharField('Codigo', max_length=100,null=True)
+    code = models.CharField('Codigo', max_length=100,null=True, unique=True)
     description = models.CharField('Descripcion', max_length=100, null=True)
     created_at = models.DateTimeField('Creado en',auto_now_add=True)
     updated_at = models.DateTimeField('Actualizado en ',auto_now=True)
@@ -60,12 +61,7 @@ class Evaluation(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     def __str__(self) -> str:
         return '{0},{1}'.format(self.employee, self. survey)
-    
-class QuestionManager(models.Manager):
-    def detail_question(self, survey_id):
-        consulta = self.filter(
-        survey_id = survey_id)
-        return consulta
+
 
 class Question(models.Model):
     id = models.AutoField(primary_key=True)
@@ -80,12 +76,6 @@ class Question(models.Model):
         return '{0}'.format(self.description)
 
     objects = QuestionManager()
-
-class AnswerOptionManager(models.Manager):
-    def detail_answer(self, question_id):
-        consultas = self.filter(
-            question_id = question_id)
-        return consultas
 
 class AnswerOption(models.Model):
     id = models.AutoField(primary_key=True)
