@@ -11,6 +11,7 @@ class EmployeeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Employee
         fields = (
+            'id',
             'first_name',
             'second_name',
             'last_name',
@@ -25,6 +26,7 @@ class AreaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Area
         fields = (
+            'id',
             'name',
         )
         
@@ -32,6 +34,7 @@ class SurveySerializer(serializers.ModelSerializer):
     class Meta:
         model = Survey
         fields = (
+            'id',
             'code',
             'description',
         )
@@ -40,6 +43,7 @@ class EvaluationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Evaluation
         fields = (
+            'id',
             'employee',
             'survey'
         )
@@ -48,6 +52,7 @@ class QuestionSerialize(serializers.ModelSerializer):
     class Meta:
         model = Question
         fields = (
+            'id',
             'survey',
             'code',
             'description',
