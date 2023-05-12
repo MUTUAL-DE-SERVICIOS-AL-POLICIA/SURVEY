@@ -68,7 +68,6 @@ class Question(models.Model):
     survey = models.ForeignKey(Survey, on_delete=models.CASCADE)
     code = models.CharField('Codigo Pregunta', max_length=100, null=True)
     description = models.CharField('Descripcion', max_length=200)
-    image = models.ImageField(upload_to=rename_question_image, null=True)
     state = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -83,6 +82,7 @@ class AnswerOption(models.Model):
     description = models.CharField('Descripcion', max_length=200)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     state = models.BooleanField(default=True)
+    image = models.ImageField(upload_to=rename_question_image, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     def __str__(self) -> str:
