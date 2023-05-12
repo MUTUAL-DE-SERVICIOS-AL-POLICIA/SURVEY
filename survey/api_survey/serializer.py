@@ -57,7 +57,6 @@ class QuestionSerialize(serializers.ModelSerializer):
             'code',
             'description',
             'state',
-            'image',
         )
         
 class AnswerSerialize(serializers.ModelSerializer):
@@ -79,6 +78,7 @@ class AnswerOptionSerializer(serializers.ModelSerializer):
             'description',
             'question',
             'state',
+            'image',
         )
 class FormQuestionSerializer(serializers.ModelSerializer):
     questions = serializers.SerializerMethodField()
