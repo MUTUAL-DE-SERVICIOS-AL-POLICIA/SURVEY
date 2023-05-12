@@ -6,8 +6,11 @@ from .models import Survey
 from .models import Question
 from .models import Answer
 from .models import AnswerOption
+import base64
 
 class EmployeeSerializer(serializers.ModelSerializer):
+    picture = serializers.SerializerMethodField()
+
     class Meta:
         model = Employee
         fields = (
@@ -21,6 +24,21 @@ class EmployeeSerializer(serializers.ModelSerializer):
             'area',
             'picture',
         )
+
+    def get_picture(self, obj):
+        if obj.picture:
+            with open(obj.picture.path, 'rb') as f:
+                encoded_image = base64.b64encode(f.read())
+                return encoded_image.decode('utf-8')
+        else:
+            return None
+
+    def to_representation(self, instance):
+        ret = super().to_representation(instance)
+        picture = self.get_picture(instance)
+        if picture is not None:
+            ret['picture'] = f"data:image/png;base64,{picture}"
+        return ret
         
 class AreaSerializer(serializers.ModelSerializer):
     class Meta:
@@ -80,6 +98,21 @@ class AnswerOptionSerializer(serializers.ModelSerializer):
             'state',
             'image',
         )
+        
+    def get_image(self, obj):
+        if obj.image:
+            with open(obj.image.path, 'rb') as f:
+                encoded_image = base64.b64encode(f.read())
+                return encoded_image.decode('utf-8')
+        else:
+            return None
+
+    def to_representation(self, instance):
+        ret = super().to_representation(instance)
+        picture = self.get_image(instance)
+        if picture is not None:
+            ret['picture'] = f"data:image/png;base64,{picture}"
+        return ret
 class FormQuestionSerializer(serializers.ModelSerializer):
     questions = serializers.SerializerMethodField()
     class Meta:
@@ -103,7 +136,6 @@ class DetailQuestionAnswerSerializer(serializers.ModelSerializer):
             'code',
             'description',
             'state',
-            'image',
             'answers'
         )
     def get_answers(self,obj):
