@@ -61,6 +61,7 @@ class Evaluation(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     def __str__(self) -> str:
         return '{0},{1}'.format(self.employee, self. survey)
+    objects = EvaluationManager()
 
 
 class Question(models.Model):

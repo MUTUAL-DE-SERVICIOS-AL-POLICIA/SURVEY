@@ -35,7 +35,7 @@ pip install djangorestframework-simplejwt
 # Configuramos la conexion a la base de datos en el archivo settings.py de la carpeta survey
 # creamos las migraciones
 ```sh
-python3 manage.py makemigration
+python3 manage.py makemigrations
 ```
 # creamos las tablas en la base de datos
 ```sh
