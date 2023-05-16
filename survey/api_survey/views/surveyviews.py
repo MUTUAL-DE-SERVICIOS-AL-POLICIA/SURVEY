@@ -1,4 +1,3 @@
-
 from django.shortcuts import render
 from api_survey.models import *
 from rest_framework.response import Response
@@ -10,6 +9,8 @@ import json
 from django.shortcuts import get_object_or_404
 from rest_framework.exceptions import ValidationError
 from django.db import transaction
+from openpyxl import Workbook
+from django.http import HttpResponse
 
 @csrf_exempt
 @transaction.atomic()
@@ -45,3 +46,37 @@ def get_survey(request, survey_id):
         return Response(serializer.data)
     except Survey.DoesNotExist:
         return Response(status=404, data={'error': 'Survey not found'})
+
+def get_qualification_report(request):
+    try:
+        filters = {
+        'date_start': request.GET.get('date_start'),
+        'date_end': request.GET.get('date_end')
+        }
+        data_evaluation = Evaluation.objects.get_evaluation_with_answer(**filters)
+        wb = Workbook()
+        ws = wb.active
+        """Creacion del encabezado"""
+        headers = ['Empleado','CI','Area', 'Codigo de Formulario ','Descripcion de Formulario','Pregunta','Respuesta','Fecha']
+        ws.append(headers)
+        """llenado de datos en hoja de excel"""
+        for evaluation in data_evaluation:
+            """ Comprueba si cada texto es None antes de concatenarlo"""
+            full_name = [texto for texto in [evaluation.employee.first_name, evaluation.employee.second_name, evaluation.employee.last_name, evaluation.employee.second_last_name] if texto is not None]
+
+            """Concatena los componentes de texto con un espacio en blanco entre ellos"""
+            full_name = " ".join(full_name)
+
+            """ Recorre las respuestas asociadas a la evaluación"""
+            for answer in evaluation.answer_set.all():
+                """ Formatear created_at en el formato deseado"""
+                created_at_formatted = evaluation.created_at.strftime('%Y-%m-%d %H:%M:%S')
+                values = [full_name, evaluation.employee.identity_card, evaluation.employee.area.name, evaluation.survey.code, evaluation.survey.description, answer.question.description, answer.answer_option.description, created_at_formatted]
+                ws.append(values)
+        """Creación de respuesta para generar el archivo"""
+        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        response['Content-Disposition'] = 'attachment; filename=datos.xlsx'
+        wb.save(response)
+        return response
+    except Survey.DoesNotExist:
+        return Response(status=404, response={'error': 'Survey not found'})
