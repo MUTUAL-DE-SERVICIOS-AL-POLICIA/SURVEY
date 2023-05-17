@@ -22,13 +22,7 @@ source rest/bin/activate
 # Instalamos los librerias necesarias dentro del entorno virtual
 ```sh
 pip install --upgrade pip
-pip install django
-pip install djangorestframework
-pip install django-cors-headers
-pip install pillow
-pip install psycopg2
-pip install django-cors-headers
-pip install djangorestframework-simplejwt
+pip install -r requirements.txt
 
 ```
 # Nos dirijimos a la carpeta donde se clono el proyecto
