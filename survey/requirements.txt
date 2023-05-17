@@ -1,0 +1,9 @@
+Django
+djangorestframework
+django-cors-headers
+Pillow
+pip
+psycopg2
+psycopg2-binary
+djangorestframework-simplejwt
+openpyxl
