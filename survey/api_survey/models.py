@@ -97,3 +97,10 @@ class Answer(models.Model):
     answer_option = models.ForeignKey(AnswerOption, on_delete=models.CASCADE)
     def __str__(self) -> str:
         return '{0},{1},{2}'.format(self.evaluation, self.question, self.answer_option)
+    
+class AllowedIps(models.Model):
+    id = models.AutoField(primary_key=True)
+    ip_address = models.CharField('ip', max_length=15, null=False, unique=True)
+    owner = models.CharField('Propietario', max_length=100, null=False)
+    def __str__(self) -> str:
+        return '{0}'.format(self.ip)

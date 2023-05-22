@@ -77,6 +77,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'api_survey.middleware.IPRestrictionMiddleware'
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
