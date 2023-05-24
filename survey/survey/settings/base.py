@@ -77,7 +77,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
-    'api_survey.middleware.IPRestrictionMiddleware'
+    'api_survey.middleware.IPRestrictionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -132,7 +133,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'es-es'
+LANGUAGE_CODE = 'es'
 
 TIME_ZONE = 'America/La_Paz'
 
