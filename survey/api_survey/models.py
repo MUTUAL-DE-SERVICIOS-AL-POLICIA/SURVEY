@@ -28,7 +28,7 @@ class Employee(models.Model):
     identity_card = models.IntegerField('Carnet de Identidad', null=False, unique=True)
     active = models.BooleanField('Activo', default=True)
     picture = models.ImageField('Fotografia', upload_to=rename_image, null=True)
-    area = models.ForeignKey(Area, on_delete=models.CASCADE, null=True)
+    area = models.ForeignKey(Area, on_delete=models.CASCADE, null=True, verbose_name='Area')
     created_at = models.DateTimeField('Creado en',auto_now_add=True , blank=True)
     updated_at = models.DateTimeField('Actualizado en ',auto_now=True , blank=True)
     class Meta:
@@ -63,8 +63,8 @@ class Survey(models.Model):
 
 class Evaluation(models.Model):
     id = models.AutoField(primary_key=True)
-    employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
-    survey = models.ForeignKey(Survey, on_delete=models.CASCADE)
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE, verbose_name='Empleado')
+    survey = models.ForeignKey(Survey, on_delete=models.CASCADE, verbose_name='Encuesta')
     created_at = models.DateTimeField(auto_now_add=True , blank=True)
     updated_at = models.DateTimeField(auto_now=True , blank=True)
     class Meta:
@@ -77,7 +77,7 @@ class Evaluation(models.Model):
 
 class Question(models.Model):
     id = models.AutoField(primary_key=True)
-    survey = models.ForeignKey(Survey, on_delete=models.CASCADE)
+    survey = models.ForeignKey(Survey, on_delete=models.CASCADE, verbose_name='Encuesta')
     code = models.CharField('Codigo Pregunta', max_length=100, null=True)
     description = models.CharField('Descripcion', max_length=200)
     state = models.BooleanField('Estado', default=True)
@@ -95,7 +95,7 @@ class AnswerOption(models.Model):
     id = models.AutoField(primary_key=True)
     code = models.CharField('Codigo de respuesta', max_length=100, null=True)
     description = models.CharField('Descripcion', max_length=200)
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, verbose_name='Pregunta')
     state = models.BooleanField('Estado', default=True)
     image = models.ImageField(upload_to=rename_question_image, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -109,9 +109,9 @@ class AnswerOption(models.Model):
     objects = AnswerOptionManager()
 
 class Answer(models.Model):
-    evaluation = models.ForeignKey(Evaluation, on_delete=models.CASCADE)
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    answer_option = models.ForeignKey(AnswerOption, on_delete=models.CASCADE)
+    evaluation = models.ForeignKey(Evaluation, on_delete=models.CASCADE, verbose_name='Evaluacion')
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, verbose_name='Pregunta')
+    answer_option = models.ForeignKey(AnswerOption, on_delete=models.CASCADE,verbose_name='Opcion respondida')
     class Meta:
         verbose_name = "Respuesta"
         verbose_name_plural = "Respuestas"
