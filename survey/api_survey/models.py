@@ -6,7 +6,7 @@ from .managers import *
 
 class Area(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField('Nombre de area', max_length=100, null=False)
+    name = models.CharField('Nombre de área', max_length=100, null=False)
     def __str__(self) -> str:
         return '{0}'.format(self.name)
     
@@ -27,8 +27,8 @@ class Employee(models.Model):
     second_last_name = models.CharField('Segundo Apellido', max_length=100, null=True, blank=True)
     identity_card = models.IntegerField('Carnet de Identidad', null=False, unique=True)
     active = models.BooleanField('Activo', default=True)
-    picture = models.ImageField('Fotografia', upload_to=rename_image, null=True)
-    area = models.ForeignKey(Area, on_delete=models.CASCADE, null=True, verbose_name='Area')
+    picture = models.ImageField('Fotografia', upload_to=rename_image, null=True,)
+    area = models.ForeignKey(Area, on_delete=models.CASCADE, null=True, verbose_name='Área')
     created_at = models.DateTimeField('Creado en',auto_now_add=True , blank=True)
     updated_at = models.DateTimeField('Actualizado en ',auto_now=True , blank=True)
     class Meta:
@@ -41,7 +41,7 @@ class Employee(models.Model):
 class Survey(models.Model):
     id = models.AutoField(primary_key=True)
     code = models.CharField('Codigo', max_length=100,null=True, unique=True)
-    description = models.CharField('Descripcion', max_length=100, null=True)
+    description = models.CharField('Descripción', max_length=100, null=True)
     created_at = models.DateTimeField('Creado en',auto_now_add=True)
     updated_at = models.DateTimeField('Actualizado en ',auto_now=True, blank=True)
     deleted_at = models.DateTimeField('Eliminado en',null=True, blank=True)
@@ -68,7 +68,7 @@ class Evaluation(models.Model):
     created_at = models.DateTimeField(auto_now_add=True , blank=True)
     updated_at = models.DateTimeField(auto_now=True , blank=True)
     class Meta:
-        verbose_name = "Evaluacion"
+        verbose_name = "Evaluación"
         verbose_name_plural = "Evaluaciones"
         
     def __str__(self) -> str:
@@ -79,7 +79,7 @@ class Question(models.Model):
     id = models.AutoField(primary_key=True)
     survey = models.ForeignKey(Survey, on_delete=models.CASCADE, verbose_name='Encuesta')
     code = models.CharField('Codigo Pregunta', max_length=100, null=True)
-    description = models.CharField('Descripcion', max_length=200)
+    description = models.CharField('Descripción', max_length=200)
     state = models.BooleanField('Estado', default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -94,10 +94,10 @@ class Question(models.Model):
 class AnswerOption(models.Model):
     id = models.AutoField(primary_key=True)
     code = models.CharField('Codigo de respuesta', max_length=100, null=True)
-    description = models.CharField('Descripcion', max_length=200)
+    description = models.CharField('Descripción', max_length=200)
     question = models.ForeignKey(Question, on_delete=models.CASCADE, verbose_name='Pregunta')
     state = models.BooleanField('Estado', default=True)
-    image = models.ImageField(upload_to=rename_question_image, null=True)
+    image = models.ImageField(upload_to=rename_question_image, null=True, verbose_name='Imagen de la Respuesta')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     class Meta:
@@ -120,7 +120,7 @@ class Answer(models.Model):
     
 class AllowedIps(models.Model):
     id = models.AutoField(primary_key=True)
-    ip_address = models.CharField('Direccion Ip', max_length=15, null=False, unique=True)
+    ip_address = models.CharField('Dirección Ip', max_length=15, null=False, unique=True)
     owner = models.CharField('Propietario', max_length=100, null=False)
     class Meta:
         verbose_name = "Ip Permitida"
