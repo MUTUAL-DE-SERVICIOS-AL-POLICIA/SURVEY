@@ -2,7 +2,11 @@ from django.db import models
 from django.utils import timezone
 from .utils import *
 from .managers import *
+from django.db.models import DateTimeField
 
+class DateTimeWithoutTZField(DateTimeField):
+    def db_type(self, connection):
+        return 'timestamp'
 
 class Area(models.Model):
     id = models.AutoField(primary_key=True)
@@ -29,8 +33,8 @@ class Employee(models.Model):
     active = models.BooleanField('Activo', default=True)
     picture = models.ImageField('Fotografia', upload_to=rename_image, null=True,)
     area = models.ForeignKey(Area, on_delete=models.CASCADE, null=True, verbose_name='Área')
-    created_at = models.DateTimeField('Creado en',auto_now_add=True , blank=True)
-    updated_at = models.DateTimeField('Actualizado en ',auto_now=True , blank=True)
+    created_at = DateTimeWithoutTZField('Creado en',auto_now_add=True , blank=True)
+    updated_at = DateTimeWithoutTZField('Actualizado en ',auto_now=True , blank=True)
     class Meta:
         verbose_name = "Empleado"
         verbose_name_plural = "Empleados"
@@ -42,9 +46,9 @@ class Survey(models.Model):
     id = models.AutoField(primary_key=True)
     code = models.CharField('Codigo', max_length=100,null=True, unique=True)
     description = models.CharField('Descripción', max_length=100, null=True)
-    created_at = models.DateTimeField('Creado en',auto_now_add=True)
-    updated_at = models.DateTimeField('Actualizado en ',auto_now=True, blank=True)
-    deleted_at = models.DateTimeField('Eliminado en',null=True, blank=True)
+    created_at = DateTimeWithoutTZField('Creado en',auto_now_add=True)
+    updated_at = DateTimeWithoutTZField('Actualizado en ',auto_now=True, blank=True)
+    deleted_at = DateTimeWithoutTZField('Eliminado en',null=True, blank=True)
     
     class Meta:
         verbose_name = "Encuesta"
@@ -65,8 +69,8 @@ class Evaluation(models.Model):
     id = models.AutoField(primary_key=True)
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE, verbose_name='Empleado')
     survey = models.ForeignKey(Survey, on_delete=models.CASCADE, verbose_name='Encuesta')
-    created_at = models.DateTimeField(auto_now_add=True , blank=True)
-    updated_at = models.DateTimeField(auto_now=True , blank=True)
+    created_at = DateTimeWithoutTZField(auto_now_add=True , blank=True)
+    updated_at = DateTimeWithoutTZField(auto_now=True , blank=True)
     class Meta:
         verbose_name = "Evaluación"
         verbose_name_plural = "Evaluaciones"
@@ -81,8 +85,8 @@ class Question(models.Model):
     code = models.CharField('Codigo Pregunta', max_length=100, null=True)
     description = models.CharField('Descripción', max_length=200)
     state = models.BooleanField('Estado', default=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created_at = DateTimeWithoutTZField(auto_now_add=True)
+    updated_at = DateTimeWithoutTZField(auto_now=True)
     class Meta:
         verbose_name = "Pregunta"
         verbose_name_plural = "Preguntas"
@@ -98,8 +102,8 @@ class AnswerOption(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE, verbose_name='Pregunta')
     state = models.BooleanField('Estado', default=True)
     image = models.ImageField(upload_to=rename_question_image, null=True, verbose_name='Imagen de la Respuesta')
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created_at = DateTimeWithoutTZField(auto_now_add=True)
+    updated_at = DateTimeWithoutTZField(auto_now=True)
     class Meta:
         verbose_name = "Opciones de Respuesta"
         verbose_name_plural = "Opciones de Respuestas"
