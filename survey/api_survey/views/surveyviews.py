@@ -57,7 +57,7 @@ def get_qualification_report(request):
         wb = Workbook()
         ws = wb.active
         """Creacion del encabezado"""
-        headers = ['Empleado','CI','Area', 'Codigo de Formulario ','Descripcion de Formulario','Pregunta','Respuesta','Fecha']
+        headers = ['EMPLEADO','CI','ÁREA', 'CÓDIGO DE FORMULARIO ','DESCRIPCIÓN DEL FORMULARIO','PREGUNTA','RESPUESTA','FECHA']
         ws.append(headers)
         """llenado de datos en hoja de excel"""
         for evaluation in data_evaluation:
