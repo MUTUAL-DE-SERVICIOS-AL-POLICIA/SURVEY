@@ -139,6 +139,6 @@ class DetailQuestionAnswerSerializer(serializers.ModelSerializer):
             'answers'
         )
     def get_answers(self,obj):
-         query = AnswerOption.objects.detail_answer(obj.id)
+         query = AnswerOption.objects.detail_answer(obj.id).order_by('code')
          answer_option = AnswerOptionSerializer(query,many=True).data
          return answer_option
